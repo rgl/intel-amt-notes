@@ -45,6 +45,93 @@ Add the computer to MeshCommander and connect to it. You should see something al
 
 You should now have a basic AMT working. Go ahead and explore it!
 
+## Python Usage (nomis/intel-amt)
+
+Install [nomis/intel-amt](https://github.com/nomis/intel-amt):
+
+```bash
+mkdir tmp && cd tmp
+sudo apt-get install -y --no-install-recommends python3-pip python3-venv
+rm -rf .venv
+python3 -m venv .venv
+source .venv/bin/activate
+cd .venv
+git clone https://github.com/nomis/intel-amt.git intel-amt
+cd intel-amt
+git checkout b33b6e98e51e8af3ae23f883dc7266ed588ad324 # 2022-04-03T13:42:33Z
+wget -qO- https://github.com/nomis/intel-amt/pull/1.patch | patch --strip 1 # see https://github.com/nomis/intel-amt/pull/1
+python3 setup.py install
+```
+
+Try `amtctrl`:
+
+```bash
+# add "test" host to ~/.config/amtctrl/hosts.cfg
+# NB credentials are stored in cleartext.
+amthostdb set -U admin test 192.168.1.89 HeyH0Password!
+amthostdb list
+amtctrl test version
+amtctrl test uuid
+amtctrl test user list
+amtctrl test power status
+amtctrl test boot status
+amtctrl test tls status
+amtctrl test pki list certs
+amtctrl test pki list keys
+```
+
+### Power Management
+
+Power on the machine:
+
+```bash
+# this can be one of:
+#   POWER_STATES = {
+#       'on': 2,
+#       'standby': 3,
+#       'sleep': 4,
+#       'reboot': 5,
+#       'hibernate': 7,
+#       'off': 8,
+#       'hard-reboot': 9,
+#       'reset': 10,
+#       'nmi': 11,
+#       'soft-off': 12,
+#       'soft-reset': 14,
+#   }
+# NB depending on the current power state, the machine can only transition to
+#    sub-set of the above. unfortunately, amtctrl does not have a way to list
+#    the currently available power states (available in the
+#    CIM_AssociatedPowerManagementService.AvailableRequestedPowerStates
+#    property) AND when something fails amtctrl will just dump the AMT
+#    service SOAP response without modifying its exit code. e.g.:
+#       ...
+#       <g:RequestPowerStateChange_OUTPUT>
+#         <g:ReturnValue>2</g:ReturnValue>
+#       </g:RequestPowerStateChange_OUTPUT>
+#       ...
+#    Example power state transitions:
+#       | State   | Transition  | Notes                                                                  |
+#       |---------|-------------|------------------------------------------------------------------------|
+#       | off     | on          |                                                                        |
+#       | on      | reset       |                                                                        |
+#       | on      | nmi         |                                                                        |
+#       | on      | sleep       |                                                                        |
+#       | on      | hibernate   |                                                                        |
+#       | on      | soft-reset  | graceful reset. only available when the LMS agent is running in the OS |
+#       | on      | soft-off    | graceful off. only available when the LMS agent is running in the OS   |
+#       | on      | off         | abrupt shutdown. equivalent to pulling the power cable                 |
+# NB WHEN REMOTE DESKTOP OR IDER IS ACTIVE, NOT ALL TRANSITIONS ARE POSSIBLE.
+#    For example, when on and remote desktop is active, it cannot transition
+#    to the off state. when this happens, the return value is 2 (not ready).
+amtctrl test power status     # TODO modify this to return the available power state transitions.
+amtctrl test power on
+amtctrl test power soft-off   # soft power off (graceful shutdown; LMS must be running in the OS).
+amtctrl test power off        # hard power off (abrupt shutdown; equivalent to pulling the power cable).
+amtctrl test power soft-reset # soft reset (graceful shutdown and then power on).
+amtctrl test power reset      # hard reset (abrupt shutdown and then power on; equivalent to pulling the power cable).
+```
+
 ## Python Usage (openwsman)
 
 **NB** openwsman is too low-level to be practical.
