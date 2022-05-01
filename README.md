@@ -132,6 +132,14 @@ amtctrl test power soft-reset # soft reset (graceful shutdown and then power on)
 amtctrl test power reset      # hard reset (abrupt shutdown and then power on; equivalent to pulling the power cable).
 ```
 
+### Network Booting
+
+Restart the machine into PXE boot:
+
+```bash
+amtctrl test pxeboot
+```
+
 ## Python Usage (openwsman)
 
 **NB** openwsman is too low-level to be practical.
