@@ -45,6 +45,54 @@ Add the computer to MeshCommander and connect to it. You should see something al
 
 You should now have a basic AMT working. Go ahead and explore it!
 
+## Python Usage (openwsman)
+
+**NB** openwsman is too low-level to be practical.
+
+See https://github.com/Openwsman/openwsman/blob/master/bindings/python
+
+Install the pywsman python package (on Ubuntu 20.04 and 22.04 this is only available for python 2):
+
+```bash
+sudo apt-get install -y python-openwsman
+```
+
+Try it:
+
+```bash
+python2 <<'EOF'
+import pywsman as wsman
+
+client = wsman.Client('http://admin:HeyH0Password!@192.168.1.89:16992/wsman')
+options = wsman.ClientOptions()
+options.set_max_elements(20)
+#options.set_dump_request()
+
+# show identity.
+body_node = client.identify(options).body()
+protocol_version = body_node.find(wsman.XML_NS_WSMAN_ID, 'ProtocolVersion')
+product_vendor = body_node.find(wsman.XML_NS_WSMAN_ID, 'ProductVendor')
+product_version = body_node.find(wsman.XML_NS_WSMAN_ID, 'ProductVersion')
+print('Identity: Protocol %s, Vendor %s, Version %s' % (protocol_version, product_vendor, product_version))
+
+# enumerate CIM_SoftwareIdentity.
+# see https://software.intel.com/sites/manageability/AMT_Implementation_and_Reference_Guide/default.htm?turl=HTMLDocuments%2FWS-Management_Class_Reference%2FCIM_SoftwareIdentity.htm
+ns = 'http://schemas.dmtf.org/wbem/wscim/1/cim-schema/2/CIM_SoftwareIdentity'
+body_node = client.enumerate(options, None, ns).body()
+context_node = body_node.find(wsman.XML_NS_ENUMERATION, 'EnumerationContext')
+while context_node:
+  response_node = client.pull(options, None, ns, str(context_node))
+  body_node = response_node.body()
+  for node in body_node.find(wsman.XML_NS_ENUMERATION, 'Items'):
+    instance_id_node = node.get('InstanceID')
+    version_node = node.get('VersionString')
+    print('CIM_SoftwareIdentity: %s %s' % (instance_id_node, version_node))
+  context_node = body_node.find(wsman.XML_NS_ENUMERATION, 'EnumerationContext')
+if context_node:
+  client.release(options, ns, str(context_node))
+EOF
+```
+
 ## Tools
 
 * https://www.meshcommander.com/
