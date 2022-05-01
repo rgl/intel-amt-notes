@@ -62,13 +62,26 @@ You should now have a basic AMT working. Go ahead and explore it!
       inside the USB pen and asks the user to apply its settings.
     * **NB** you can further customize this file using the `Setup.bin Manager` tab of MeshCommander.
     * **NB** for this provision method to work you must enable it in the UEFI firmware.
-  * https://downloadcenter.intel.com/download/26505/Intel-Setup-and-Configuration-Software-Intel-SCS- 
+  * https://downloadcenter.intel.com/download/26505/Intel-Setup-and-Configuration-Software-Intel-SCS-
   * https://downloadmirror.intel.com/26505/eng/Configurator_download_package_12.1.0.87.zip
     * Version: 12.1 (Latest) Date: 4/10/2019
     * **NB** this is the last version that I known that lets you create a `Setup.bin` file using the `Prepare a USB Key for Manual Configuration...` tool window.
     * **NB** I've added a [copy of ACUWizardInstaller-12.1.0.87.msi into this repository](ACUWizardInstaller-12.1.0.87.msi).
     * **NB** you might need to disable the malware/anti-virus protection for
              being able to actually create the pen like the SCS tool wants.
+* [OpenWSMAN](https://openwsman.github.io/)
+
+## Libraries
+
+* Node.js:
+  * [Ylianst/MeshCentral/amt](https://github.com/Ylianst/MeshCentral/tree/master/amt)
+    * See the [meshcmd source code?](https://github.com/Ylianst/MeshCommander/issues/17) issue.
+* Python:
+  * [sdague/amt](https://github.com/sdague/amt)
+  * [nomis/intel-amt](https://github.com/nomis/intel-amt)
+    * A fork of `sdague/amt` that has more features.
+  * [OpenStack Ironic AMT drivers](https://opendev.org/x/ironic-staging-drivers/src/branch/master/ironic_staging_drivers/amt)
+    * **NB** These drivers were removed from OpenStack Ocata as described in the [Release Notes](https://docs.huihoo.com/openstack/docs.openstack.org/releasenotes/ironic/ocata.html).
 
 ## Documentation
 
