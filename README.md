@@ -58,8 +58,7 @@ source .venv/bin/activate
 cd .venv
 git clone https://github.com/nomis/intel-amt.git intel-amt
 cd intel-amt
-git checkout b33b6e98e51e8af3ae23f883dc7266ed588ad324 # 2022-04-03T13:42:33Z
-wget -qO- https://github.com/nomis/intel-amt/pull/1.patch | patch --strip 1 # see https://github.com/nomis/intel-amt/pull/1
+git checkout '8f6cb8ffb7944df5f98c711fabd1f16c6edcbf0b' # 2022-04-29T17:01:58Z
 python3 setup.py install
 ```
 
