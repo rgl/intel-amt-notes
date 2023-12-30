@@ -437,6 +437,7 @@ EOF
 
 ## Tools
 
+* [Open AMT Cloud Toolkit](https://github.com/open-amt-cloud-toolkit).
 * https://www.meshcommander.com/
   Open-source tool for managing AMT enabled systems from Linux.
   The source code is at:
@@ -463,7 +464,11 @@ EOF
 
 ## Libraries
 
+* Go:
+  * [open-amt-cloud-toolkit/rpc-go](https://github.com/open-amt-cloud-toolkit/rpc-go).
+  * [open-amt-cloud-toolkit/go-wsman-messages](https://github.com/open-amt-cloud-toolkit/go-wsman-messages).
 * Node.js:
+  * [open-amt-cloud-toolkit/wsman-messages](https://github.com/open-amt-cloud-toolkit/wsman-messages).
   * [Ylianst/MeshCentral/amt](https://github.com/Ylianst/MeshCentral/tree/master/amt)
     * See the [meshcmd source code?](https://github.com/Ylianst/MeshCommander/issues/17) issue.
 * Python:
