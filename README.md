@@ -2,7 +2,23 @@
 
 Notes about [Intel AMT](https://en.wikipedia.org/wiki/Intel_Active_Management_Technology) (aka iAMT, aka Active Management Technology).
 
-## Setup
+## AMT configuration file
+
+The `Setup.bin` AMT configuration file can be created with one of the following tools:
+
+* [amt-setupbin](#amt-setupbin).
+* [Intel AMT Configuration Utility](#intel-amt-configuration-utility).
+* [MeshCommander](#meshcommander).
+
+### amt-setupbin
+
+Go to the [rgl/amt-setupbin repository](https://github.com/rgl/amt-setupbin)
+and follow the instructions to create the `Setup.bin` file from the
+command line.
+
+Then jump to the [BIOS section bellow](#bios).
+
+### Intel AMT Configuration Utility
 
 Run the AMT Configuration Utility as Administrator, click the `Create Settings to Configure Multiple Systems` button:
 
@@ -13,6 +29,8 @@ Click the `Tools` button, then select the `Prepare a USB Key for Manual Configur
 ![](setup-bin-acu-settings.png)
 
 This should create the `Setup.bin` (saved in this repo as [Setup-default.bin](Setup-default.bin)) file in the USB drive.
+
+### MeshCommander
 
 Start MeshCommander, then open the `Setup.bin` file using the `Setup.bin Manager` tab:
 
@@ -30,6 +48,8 @@ The end result should be:
 ![](setup-bin-meshcommander-settings.png)
 
 Save the result to the `Setup.bin` file (saved in this repo as [Setup.bin](Setup.bin)) inside the USB drive.
+
+## BIOS
 
 Enter the system BIOS, enable `Intel AMT` and `USB Provisioning of AMT`:
 
